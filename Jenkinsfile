@@ -29,7 +29,7 @@ pipeline {
 
             post {
                 always {
-                    junit '**/failsafe-reports/*.xml,**/surefire-reports/*.xml'
+                    junit allowEmptyResults: true, testResults: '**/failsafe-reports/*.xml,**/surefire-reports/*.xml'
                     jacoco()
                 }
             }
