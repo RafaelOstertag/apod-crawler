@@ -4,11 +4,11 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 
-private val logger: Logger = LoggerFactory.getLogger("main")
+private val logger: Logger = LoggerFactory.getLogger("Main")
 
 fun main(args: Array<String>) {
     val gitInfo = GitInfo()
-    println("apod-crawler ${gitInfo.version} built from commit ${gitInfo.commitShort} @ ${gitInfo.buildTime}\n")
+    logger.info("apod-crawler ${gitInfo.version} built from commit ${gitInfo.commitShort} @ ${gitInfo.buildTime}")
 
     val arguments = Arguments()
     arguments.parse(args)
