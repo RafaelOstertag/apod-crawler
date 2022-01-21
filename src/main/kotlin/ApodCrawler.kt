@@ -50,9 +50,9 @@ class ApodCrawler(
 
     fun crawl() = runBlocking(threadPool) {
         val dates = generateDates()
+        logger.info("Download images from {} up to {}", dates.first(), dates.last())
         val imageUris = dates
             .map { date ->
-                logger.info("Processing date {}", date)
                 async {
                     getPictureURI(date)
                 }
