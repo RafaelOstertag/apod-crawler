@@ -54,8 +54,8 @@ class Arguments {
             exitProcess(3)
         }
 
-        if (startDate >= endDate) {
-            logger.error("start date ({}) must be earlier than end date ({})",
+        if (startDate > endDate) {
+            logger.error("start date ({}) must be earlier than or equal to end date ({})",
                 startDate.format(localDateFormatter),
                 endDate.format(localDateFormatter))
             exitProcess(3)

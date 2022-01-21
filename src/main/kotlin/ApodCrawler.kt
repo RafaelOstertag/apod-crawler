@@ -45,7 +45,7 @@ class ApodCrawler(
     }
 
     init {
-        check(endDate > startDate) { "endDate must be after startDate" }
+        check(endDate >= startDate) { "endDate must be after startDate" }
     }
 
     fun crawl() = runBlocking(threadPool) {
