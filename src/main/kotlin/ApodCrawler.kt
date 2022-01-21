@@ -141,6 +141,6 @@ class ApodCrawler(
 
     private companion object {
         val logger: Logger = LoggerFactory.getLogger(ApodCrawler::class.java)
-        val imagePathRegex = Regex("<a href=\"(?<imagePath>image/[\\d\\w/._-]+)\"")
+        val imagePathRegex = Regex("<a href=\"(?<imagePath>image/[\\d\\w/.-]+)\"")
     }
 }
