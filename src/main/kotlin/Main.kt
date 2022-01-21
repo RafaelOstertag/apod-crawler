@@ -7,21 +7,25 @@ import org.slf4j.LoggerFactory
 private val logger: Logger = LoggerFactory.getLogger("main")
 
 fun main(args: Array<String>) {
-    Arguments.parse(args)
+    val gitInfo = GitInfo()
+    println("apod-crawler ${gitInfo.version} built from commit ${gitInfo.commitShort} @ ${gitInfo.buildTime}\n")
+
+    val arguments = Arguments()
+    arguments.parse(args)
 
     try {
         logger.info("Download APOD images to {} between {} and {} (concurrency: {})",
-            Arguments.targetDirectory,
-            Arguments.startDate.format(localDateFormatter),
-            Arguments.endDate.format(localDateFormatter),
-            Arguments.concurrency
+            arguments.targetDirectory,
+            arguments.startDate.format(localDateFormatter),
+            arguments.endDate.format(localDateFormatter),
+            arguments.concurrency
         )
 
         ApodCrawler(
-            Arguments.targetDirectory,
-            Arguments.startDate,
-            Arguments.endDate,
-            Arguments.concurrency).use {
+            arguments.targetDirectory,
+            arguments.startDate,
+            arguments.endDate,
+            arguments.concurrency).use {
             it.crawl()
         }
     } catch (e: Exception) {
