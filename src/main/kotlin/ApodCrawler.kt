@@ -78,7 +78,10 @@ class ApodCrawler(
         try {
             val response: HttpResponse = client.get(htmlUrl)
             if (response.status != HttpStatusCode.OK) {
-                logger.error("Got HTTP Status {} on {}", response.status, htmlUrl)
+                logger.error("Got HTTP Status {} on {}, expected {}",
+                    response.status.value,
+                    htmlUrl,
+                    HttpStatusCode.OK.value)
                 return null
             }
 
@@ -97,7 +100,10 @@ class ApodCrawler(
         try {
             client.get<HttpStatement>(imageURI.toASCIIString()).execute { httpResponse ->
                 if (httpResponse.status != HttpStatusCode.OK) {
-                    logger.error("Got HTTP Status {} on {}", httpResponse.status, imageURI)
+                    logger.error("Got HTTP Status {} on {}, expected {}",
+                        httpResponse.status.value,
+                        imageURI,
+                        HttpStatusCode.OK.value)
                     return@execute
                 }
 
