@@ -12,4 +12,18 @@
     <suppress>
         <cve>CVE-2020-29582</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: atomicfu-jvm-0.17.1.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.jetbrains\.kotlinx/atomicfu\-jvm@.*$</packageUrl>
+        <cve>CVE-2022-24329</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: kotlinx-cli-jvm-0.3.4.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.jetbrains\.kotlinx/kotlinx\-cli\-jvm@.*$</packageUrl>
+        <cve>CVE-2022-24329</cve>
+    </suppress>
 </suppressions>
