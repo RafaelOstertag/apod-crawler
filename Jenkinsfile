@@ -4,7 +4,6 @@ pipeline {
     }
 
     triggers {
-        pollSCM '@hourly'
         cron '@daily'
     }
 
@@ -36,6 +35,12 @@ pipeline {
         }
 
         stage('Sonarcloud') {
+            when {
+                not {
+                    triggeredBy "TimerTrigger"
+                }
+            }
+
             steps {
                 configFileProvider([configFile(fileId: '579d6960-4c33-4378-b1f9-8f808e2ab5c4', variable: 'MAVEN_SETTINGS_XML')]) {
                     withSonarQubeEnv(installationName: 'Sonarcloud', credentialsId: 'e8795d01-550a-4c05-a4be-41b48b22403f') {
@@ -46,6 +51,12 @@ pipeline {
         }
 
         stage("Quality Gate") {
+            when {
+                not {
+                    triggeredBy "TimerTrigger"
+                }
+            }
+
             steps {
                 timeout(time: 30, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
