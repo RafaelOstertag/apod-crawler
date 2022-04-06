@@ -221,10 +221,15 @@
 
     <distributionManagement>
         <repository>
-            <id>apod-maven</id>
-            <name>APOD Maven Repository</name>
-            <url>https://colossus.kruemel.home/nexus/repository/apod/</url>
+            <id>rafaelostertag.jfrog.io</id>
+            <name>JFrog Release Repository</name>
+            <url>https://rafaelostertag.jfrog.io/artifactory/maven-release</url>
         </repository>
+        <snapshotRepository>
+            <id>rafaelostertag.jfrog.io</id>
+            <name>JFrog Snapshot Repository</name>
+            <url>https://rafaelostertag.jfrog.io/artifactory/maven-snapshot</url>
+        </snapshotRepository>
     </distributionManagement>
 
     <profiles>
