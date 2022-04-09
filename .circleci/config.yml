@@ -17,13 +17,26 @@ jobs:
       - run:
           name: Build & Test
           command: mvn -B clean verify
-      - run:
-          name: Run Sonar
-          command: mvn -B sonar:sonar -Dsonar.projectKey=ch.guengel.apod:apod-crawler -Dsonar.qualitygate.wait=true
+      - persist_to_workspace:
+          root: target
+          paths:
+            - .
       - save_cache:
           key: maven-repo-v1-{{ .Branch }}-{{ checksum "pom.xml" }}
           paths:
             - ~/.m2
+
+  sonar:
+    docker:
+      - image: cimg/openjdk:11.0
+    resource_class: medium
+    steps:
+      - checkout
+      - attach_workspace:
+          at: target
+      - run:
+          name: Run Sonar
+          command: mvn -B sonar:sonar -Dsonar.projectKey=ch.guengel.apod:apod-crawler -Dsonar.qualitygate.wait=true
 
   check-dependencies:
     docker:
@@ -44,7 +57,7 @@ jobs:
           paths:
             - ~/.m2
 
-  deploy-to-maven:
+  deploy-maven-artifact:
     docker:
       - image: cimg/openjdk:11.0
     resource_class: medium
@@ -59,6 +72,15 @@ jobs:
           name: Deploy to Maven Repository
           command: mvn -s .circleci/settings.xml -B -DskipTests deploy
 
+  trigger-docker-build:
+    docker:
+      - image: cimg/base:latest
+    resource_class: small
+    steps:
+      - run:
+          name: Trigger docker build
+          command: .circleci/trigger-docker-build.sh
+
   test:
     machine: true
     resource_class: rafaelostertag/runners-arm64
@@ -71,16 +93,28 @@ workflows:
   version: 2
   build-any-branch:
     jobs:
-      - build-and-test:
+      - build-and-test
+      - check-dependencies
+      - sonar:
           context:
             - sonar
-      - check-dependencies
-      - deploy-to-maven:
           requires:
             - build-and-test
+      - deploy-maven-artifact:
+          requires:
+            - sonar
             - check-dependencies
           context:
             - maven-context
+      - trigger-docker-build:
+          filters:
+            branches:
+              only:
+                - master
+          context:
+            - circle-ci
+          requires:
+            - deploy-maven-artifact
 
   daily-dependency-check:
     triggers:
