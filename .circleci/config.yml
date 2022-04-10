@@ -79,7 +79,7 @@ jobs:
     steps:
       - run:
           name: Trigger docker build
-          command: .circleci/trigger-docker-build.sh
+          command: sh .circleci/trigger-docker-build.sh
 
   test:
     machine: true
