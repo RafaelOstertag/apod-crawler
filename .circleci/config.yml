@@ -74,7 +74,7 @@ jobs:
 
   trigger-docker-build:
     docker:
-      - image: cimg/base:stable
+      - image: cimg/openjdk:11.0
     resource_class: small
     steps:
       - checkout
