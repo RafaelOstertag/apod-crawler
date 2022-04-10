@@ -77,9 +77,10 @@ jobs:
       - image: cimg/base:stable
     resource_class: small
     steps:
+      - checkout
       - run:
           name: Trigger docker build
-          command: sh .circleci/trigger-docker-build.sh
+          command: .circleci/trigger-docker-build.sh
 
   test:
     machine: true
