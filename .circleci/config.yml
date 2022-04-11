@@ -30,6 +30,11 @@ jobs:
     resource_class: medium
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - maven-repo-v1-{{ .Branch }}-{{ checksum "pom.xml" }}
+            - maven-repo-v1-{{ .Branch }}-
+            - maven-repo-v1-
       - attach_workspace:
           at: target
       - run:
