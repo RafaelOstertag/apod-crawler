@@ -3,8 +3,8 @@
     <servers>
         <server>
             <id>rafaelostertag.jfrog.io</id>
-            <username>maven-deploy</username>
-            <password>${env.JFROG_PASSWORD}</password>
+            <username>${env.REPO_USERNAME}</username>
+            <password>${env.REPO_PASSWORD}</password>
         </server>
     </servers>
 </settings>
