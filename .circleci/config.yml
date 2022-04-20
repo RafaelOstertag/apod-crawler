@@ -53,4 +53,4 @@ workflows:
     jobs:
       - c/maven-dependency-check:
           context:
-            - maven-repository-read
+            - repository-read
