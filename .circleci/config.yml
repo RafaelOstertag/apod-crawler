@@ -1,18 +1,7 @@
 version: 2.1
 
 orbs:
-  c: rafaelostertag/common-orb@1.6.2
-
-jobs:
-  trigger-docker-build:
-    docker:
-      - image: cimg/openjdk:11.0
-    resource_class: small
-    steps:
-      - checkout
-      - run:
-          name: Trigger docker build
-          command: .circleci/trigger-docker-build.sh
+  c: rafaelostertag/common-orb@1.10.1
 
 workflows:
   version: 2
@@ -30,7 +19,9 @@ workflows:
             - build-and-test
           context:
             - maven-repository-write
-      - trigger-docker-build:
+      - c/maven-trigger-pipeline-with-version:
+          name: trigger-docker-build
+          project-name: apod-crawler-docker
           filters:
             branches:
               only:
