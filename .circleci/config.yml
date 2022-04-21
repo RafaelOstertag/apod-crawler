@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  c: rafaelostertag/common-orb@1.10.1
+  c: rafaelostertag/common-orb@1.10.2
 
 workflows:
   version: 2
@@ -21,7 +21,7 @@ workflows:
             - maven-repository-write
       - c/maven-trigger-pipeline-with-version:
           name: trigger-docker-build
-          project-name: apod-crawler-docker
+          project-name: "apod-crawler-docker"
           filters:
             branches:
               only:
