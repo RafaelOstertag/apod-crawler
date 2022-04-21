@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  c: rafaelostertag/common-orb@1.10.2
+  c: rafaelostertag/common-orb@1.10.3
 
 workflows:
   version: 2
