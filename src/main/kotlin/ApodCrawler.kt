@@ -85,9 +85,7 @@ class ApodCrawler(
                 return null
             }
 
-            return response.receive<String>().let { text ->
-                createImageURI(text, htmlUrl)
-            }
+            return createImageURI(response.body(), htmlUrl)
         } catch (e: Exception) {
             logger.error("Got exception on {}", htmlUrl, e)
             return null
@@ -98,17 +96,16 @@ class ApodCrawler(
         val filename = Path.of(imageURI.path).fileName
         val file = downloadDirectory.resolve(filename).toFile()
         try {
-            client.get<HttpStatement>(imageURI.toASCIIString()).execute { httpResponse ->
-                if (httpResponse.status != HttpStatusCode.OK) {
-                    logger.error("Got HTTP Status {} on {}, expected {}",
-                        httpResponse.status.value,
-                        imageURI,
-                        HttpStatusCode.OK.value)
-                    return@execute
-                }
-
-                downloadImage(httpResponse, file)
+            val httpResponse = client.get(imageURI.toASCIIString())
+            if (httpResponse.status != HttpStatusCode.OK) {
+                logger.error("Got HTTP Status {} on {}, expected {}",
+                    httpResponse.status.value,
+                    imageURI,
+                    HttpStatusCode.OK.value)
+                return
             }
+
+            downloadImage(httpResponse, file)
         } catch (ex: Exception) {
             logger.error("Got exception on {}", imageURI, ex)
         }
@@ -118,7 +115,7 @@ class ApodCrawler(
         httpResponse: HttpResponse,
         file: File,
     ) {
-        val channel: ByteReadChannel = httpResponse.receive()
+        val channel: ByteReadChannel = httpResponse.bodyAsChannel()
         while (!channel.isClosedForRead) {
             val packet = channel.readRemaining(DEFAULT_BUFFER_SIZE.toLong())
             while (!packet.isEmpty) {
